@@ -7,17 +7,17 @@ import (
 	"github.com/koki-algebra/grpc_sample/internal/repository"
 )
 
-type UserUsecase struct {
+type User struct {
 	repo repository.UserRepository
 }
 
-func NewUserUsecase() *UserUsecase {
-	return &UserUsecase{
+func NewUserUsecase() *User {
+	return &User{
 		repo: repository.NewUserRepository(),
 	}
 }
 
-func (u *UserUsecase) GetByID(ctx context.Context, id string) (*entity.User, error) {
+func (u *User) GetByID(ctx context.Context, id string) (*entity.User, error) {
 	user, err := u.repo.FindByID(ctx, id)
 	if err != nil {
 		return nil, err

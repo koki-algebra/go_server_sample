@@ -34,10 +34,10 @@ func (s Server) Run(ctx context.Context) error {
 	srv := grpc.NewServer()
 
 	// usecases
-	userUsecase := usecase.NewUserUsecase()
+	user := usecase.NewUserUsecase()
 
 	// services
-	userService := service.NewUserService(userUsecase)
+	userService := service.NewUserService(user)
 
 	// register services
 	generated.RegisterUserServiceServer(srv, userService)
