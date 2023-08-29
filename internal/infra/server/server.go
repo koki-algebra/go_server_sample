@@ -9,7 +9,8 @@ import (
 	"os/signal"
 
 	"github.com/koki-algebra/grpc_sample/internal/infra/grpc/generated"
-	"github.com/koki-algebra/grpc_sample/internal/infra/grpc/handler"
+	"github.com/koki-algebra/grpc_sample/internal/infra/grpc/service"
+	"github.com/koki-algebra/grpc_sample/internal/usecase"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -32,8 +33,14 @@ func (s Server) Run(ctx context.Context) error {
 
 	srv := grpc.NewServer()
 
+	// usecases
+	userUsecase := usecase.NewUserUsecase()
+
+	// services
+	userService := service.NewUserService(userUsecase)
+
 	// register services
-	generated.RegisterUserServiceServer(srv, handler.NewUserHandler())
+	generated.RegisterUserServiceServer(srv, userService)
 
 	reflection.Register(srv)
 
