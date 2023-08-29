@@ -8,7 +8,10 @@ import (
 	"os"
 	"os/signal"
 
+	"github.com/koki-algebra/grpc_sample/internal/infra/grpc/generated"
+	"github.com/koki-algebra/grpc_sample/internal/infra/grpc/handler"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 type Server struct {
@@ -28,6 +31,11 @@ func (s Server) Run(ctx context.Context) error {
 	}
 
 	srv := grpc.NewServer()
+
+	// register services
+	generated.RegisterUserServiceServer(srv, handler.NewUserHandler())
+
+	reflection.Register(srv)
 
 	go func() {
 		slog.Info(fmt.Sprintf("start gRPC server port: %d", s.port))
