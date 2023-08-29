@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 
+	"github.com/koki-algebra/grpc_sample/internal/entity"
 	"github.com/koki-algebra/grpc_sample/internal/infra/grpc/generated"
 	"github.com/koki-algebra/grpc_sample/internal/usecase"
 )
@@ -19,8 +20,21 @@ func NewUserService(usecase *usecase.UserUsecase) *UserService {
 }
 
 func (s *UserService) GetByID(ctx context.Context, req *generated.GetByIDRequest) (*generated.GetByIDResponse, error) {
+	user, err := s.usecase.GetByID(ctx, req.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	return convertUser(user), nil
+}
+
+func convertUser(user *entity.User) *generated.GetByIDResponse {
+	if user == nil {
+		return nil
+	}
+
 	return &generated.GetByIDResponse{
-		Id:   "xyz",
-		Name: "foo",
-	}, nil
+		Id:   user.ID,
+		Name: user.Name,
+	}
 }
