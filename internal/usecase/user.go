@@ -11,7 +11,7 @@ type User struct {
 	repo repository.UserRepository
 }
 
-func NewUserUsecase() *User {
+func NewUser() *User {
 	return &User{
 		repo: repository.NewUserRepository(),
 	}

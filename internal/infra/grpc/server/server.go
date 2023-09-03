@@ -34,7 +34,7 @@ func (s Server) Run(ctx context.Context) error {
 	srv := grpc.NewServer()
 
 	// usecases
-	user := usecase.NewUserUsecase()
+	user := usecase.NewUser()
 
 	// services
 	userService := service.NewUserService(user)

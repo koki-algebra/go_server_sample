@@ -1,15 +1,20 @@
 .PHONY: help
 .DEFAULT_GOAL := help
 
-run: ## Start web server
+grpc_run: ## Start gRPC server
 	@make generate
-	@go run cmd/main.go
+	@go run cmd/grpc/main.go
+
+gql_run: ## Start GraphQL server
+	@make generate
+	@go run cmd/graphql/main.go
 
 generate: ## Generate code
 	@rm -rf internal/infra/grpc/generated
 	@protoc -I=api/proto --go_out=internal/infra \
 		--go-grpc_out=internal/infra \
 		api/proto/*.proto
+	@cd configs && gqlgen generate
 
 fmt: ## format code
 	@go fmt ./...

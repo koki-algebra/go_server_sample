@@ -5,7 +5,7 @@ import (
 	"log/slog"
 	"os"
 
-	"github.com/koki-algebra/grpc_sample/internal/infra/server"
+	"github.com/koki-algebra/grpc_sample/internal/infra/grpc/server"
 )
 
 func main() {
