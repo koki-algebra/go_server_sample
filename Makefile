@@ -1,13 +1,9 @@
 .PHONY: help
 .DEFAULT_GOAL := help
 
-grpc_run: ## Start gRPC server
+run: ## Start Application
 	@make generate
-	@go run cmd/grpc/main.go
-
-gql_run: ## Start GraphQL server
-	@make generate
-	@go run cmd/graphql/main.go
+	@docker compose up -d
 
 generate: ## Generate code
 	@rm -rf internal/infra/grpc/generated
@@ -18,6 +14,9 @@ generate: ## Generate code
 
 fmt: ## format code
 	@go fmt ./...
+
+clear: ## Clear Application
+	@docker compose down
 
 help: ## Show help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
