@@ -8,8 +8,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/koki-algebra/grpc_sample/internal/entity"
-	"github.com/koki-algebra/grpc_sample/internal/infra/graphql/generated/model"
+	"github.com/koki-algebra/go_server_sample/internal/entity"
+	"github.com/koki-algebra/go_server_sample/internal/infra/graphql/generated/model"
 )
 
 // Save is the resolver for the Save field.

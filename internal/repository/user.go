@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 
-	"github.com/koki-algebra/grpc_sample/internal/entity"
+	"github.com/koki-algebra/go_server_sample/internal/entity"
 )
 
 type UserRepository interface {

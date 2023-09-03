@@ -3,9 +3,9 @@ package service
 import (
 	"context"
 
-	"github.com/koki-algebra/grpc_sample/internal/entity"
-	"github.com/koki-algebra/grpc_sample/internal/infra/grpc/generated"
-	"github.com/koki-algebra/grpc_sample/internal/usecase"
+	"github.com/koki-algebra/go_server_sample/internal/entity"
+	"github.com/koki-algebra/go_server_sample/internal/infra/grpc/generated"
+	"github.com/koki-algebra/go_server_sample/internal/usecase"
 )
 
 type UserService struct {

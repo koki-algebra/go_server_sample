@@ -8,9 +8,9 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/koki-algebra/grpc_sample/internal/infra/grpc/generated"
-	"github.com/koki-algebra/grpc_sample/internal/infra/grpc/service"
-	"github.com/koki-algebra/grpc_sample/internal/usecase"
+	"github.com/koki-algebra/go_server_sample/internal/infra/grpc/generated"
+	"github.com/koki-algebra/go_server_sample/internal/infra/grpc/service"
+	"github.com/koki-algebra/go_server_sample/internal/usecase"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )

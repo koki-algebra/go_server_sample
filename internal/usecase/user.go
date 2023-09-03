@@ -3,8 +3,8 @@ package usecase
 import (
 	"context"
 
-	"github.com/koki-algebra/grpc_sample/internal/entity"
-	"github.com/koki-algebra/grpc_sample/internal/repository"
+	"github.com/koki-algebra/go_server_sample/internal/entity"
+	"github.com/koki-algebra/go_server_sample/internal/repository"
 )
 
 type User struct {

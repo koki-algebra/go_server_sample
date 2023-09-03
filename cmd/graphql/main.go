@@ -5,7 +5,7 @@ import (
 	"log/slog"
 	"os"
 
-	"github.com/koki-algebra/grpc_sample/internal/infra/graphql/server"
+	"github.com/koki-algebra/go_server_sample/internal/infra/graphql/server"
 )
 
 func main() {

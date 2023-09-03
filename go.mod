@@ -1,4 +1,4 @@
-module github.com/koki-algebra/grpc_sample
+module github.com/koki-algebra/go_server_sample
 
 go 1.21.0
 

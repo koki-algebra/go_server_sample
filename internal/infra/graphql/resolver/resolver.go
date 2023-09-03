@@ -1,6 +1,6 @@
 package resolver
 
-import "github.com/koki-algebra/grpc_sample/internal/usecase"
+import "github.com/koki-algebra/go_server_sample/internal/usecase"
 
 // This file will not be regenerated automatically.
 //
