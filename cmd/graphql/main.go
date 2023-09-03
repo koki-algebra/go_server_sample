@@ -10,7 +10,7 @@ import (
 
 func main() {
 	if err := run(context.Background()); err != nil {
-		slog.Error("failed to terminated server", err)
+		slog.Error("failed to terminated server", "error", err)
 		os.Exit(1)
 	}
 }
