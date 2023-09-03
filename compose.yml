@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  api_server:
+    image: api_server
+    container_name: api_server
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: deploy
+    tty: true
+    stdin_open: true
+    environment:
+      - TZ=Asia/Tokyo
+      - DB_USER=app
+      - DB_PASSWORD=password
+      - DB_PORT=5432
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15.4-bullseye
+    container_name: db
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - TZ=Asia/Tokyo
+      - POSTGRES_USER=app
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=app
