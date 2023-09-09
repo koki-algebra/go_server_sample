@@ -8,7 +8,7 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/koki-algebra/go_server_sample/internal/infra/grpc/generated"
+	userpb "github.com/koki-algebra/go_server_sample/internal/infra/grpc/generated/user/v1"
 	"github.com/koki-algebra/go_server_sample/internal/infra/grpc/service"
 	"github.com/koki-algebra/go_server_sample/internal/usecase"
 	"google.golang.org/grpc"
@@ -40,7 +40,7 @@ func (s Server) Run(ctx context.Context) error {
 	userService := service.NewUserService(user)
 
 	// register services
-	generated.RegisterUserServiceServer(srv, userService)
+	userpb.RegisterUserServiceServer(srv, userService)
 
 	reflection.Register(srv)
 

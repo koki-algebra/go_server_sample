@@ -7,14 +7,16 @@ run: ## Start Application
 
 generate: ## Generate code
 	@rm -rf internal/infra/grpc/generated
-	@protoc -I=api/proto --go_out=internal/infra \
-		--go-grpc_out=internal/infra \
-		api/proto/*.proto
+	@cd configs && buf generate ../api/proto
 	@cd configs && gqlgen generate
 	@cd api/http && oapi-codegen -config config.yml openapi.yml
 
 fmt: ## format code
 	@go fmt ./...
+	@cd configs && buf format -w ../api/proto
+
+lint: ## lint code
+	@cd configs && buf lint ../api/proto
 
 clear: ## Clear Application
 	@docker compose down

@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package user.v1;
+
+option go_package = "github.com/koki-algebra/go_server_sample/internal/infra/grpc/generated/user/v1";
+
+service UserService {
+  rpc GetByID(GetByIDRequest) returns (GetByIDResponse);
+}
+
+message GetByIDRequest {
+  string id = 1;
+}
+
+message GetByIDResponse {
+  string id = 1;
+  string name = 2;
+}

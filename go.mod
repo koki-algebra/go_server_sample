@@ -4,6 +4,7 @@ go 1.21.0
 
 require (
 	github.com/99designs/gqlgen v0.17.36
+	github.com/bufbuild/connect-go v1.10.0
 	github.com/getkin/kin-openapi v0.120.0
 	github.com/go-chi/chi/v5 v5.0.10
 	github.com/oapi-codegen/runtime v1.0.0

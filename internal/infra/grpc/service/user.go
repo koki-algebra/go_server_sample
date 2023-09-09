@@ -4,13 +4,13 @@ import (
 	"context"
 
 	"github.com/koki-algebra/go_server_sample/internal/entity"
-	"github.com/koki-algebra/go_server_sample/internal/infra/grpc/generated"
+	pb "github.com/koki-algebra/go_server_sample/internal/infra/grpc/generated/user/v1"
 	"github.com/koki-algebra/go_server_sample/internal/usecase"
 )
 
 type UserService struct {
 	usecase *usecase.User
-	generated.UnimplementedUserServiceServer
+	pb.UnimplementedUserServiceServer
 }
 
 func NewUserService(usecase *usecase.User) *UserService {
@@ -19,7 +19,7 @@ func NewUserService(usecase *usecase.User) *UserService {
 	}
 }
 
-func (s *UserService) GetByID(ctx context.Context, req *generated.GetByIDRequest) (*generated.GetByIDResponse, error) {
+func (s *UserService) GetByID(ctx context.Context, req *pb.GetByIDRequest) (*pb.GetByIDResponse, error) {
 	user, err := s.usecase.GetByID(ctx, req.Id)
 	if err != nil {
 		return nil, err
@@ -28,12 +28,12 @@ func (s *UserService) GetByID(ctx context.Context, req *generated.GetByIDRequest
 	return convertUser(user), nil
 }
 
-func convertUser(user *entity.User) *generated.GetByIDResponse {
+func convertUser(user *entity.User) *pb.GetByIDResponse {
 	if user == nil {
 		return nil
 	}
 
-	return &generated.GetByIDResponse{
+	return &pb.GetByIDResponse{
 		Id:   user.ID,
 		Name: user.Name,
 	}
