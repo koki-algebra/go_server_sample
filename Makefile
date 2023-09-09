@@ -11,6 +11,7 @@ generate: ## Generate code
 		--go-grpc_out=internal/infra \
 		api/proto/*.proto
 	@cd configs && gqlgen generate
+	@cd api/http && oapi-codegen -config config.yml openapi.yml
 
 fmt: ## format code
 	@go fmt ./...

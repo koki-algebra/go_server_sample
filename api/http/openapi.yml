@@ -1,0 +1,55 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: User Endpoint
+servers:
+  - url: http://localhost:8080
+paths:
+  /users/{id}:
+    get:
+      description: Get user by user id
+      operationId: getUserByID
+      parameters:
+        - name: id
+          in: path
+          description: ID of user to get
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successfully returned a user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "572db776-4f09-11ee-be56-0242ac120002"
+        name:
+          type: string
+          example: "John Doe"
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Error code
+        message:
+          type: string
+          description: Error message
