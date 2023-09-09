@@ -2,17 +2,18 @@ package server
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log/slog"
-	"net"
-	"os"
-	"os/signal"
+	"net/http"
+	"time"
 
-	userpb "github.com/koki-algebra/go_server_sample/internal/infra/grpc/generated/user/v1"
+	"github.com/koki-algebra/go_server_sample/internal/infra/grpc/generated/user/v1/v1connect"
 	"github.com/koki-algebra/go_server_sample/internal/infra/grpc/service"
 	"github.com/koki-algebra/go_server_sample/internal/usecase"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
+	"golang.org/x/net/http2"
+	"golang.org/x/net/http2/h2c"
+	"golang.org/x/sync/errgroup"
 )
 
 type Server struct {
@@ -26,12 +27,7 @@ func NewServer(port int) *Server {
 }
 
 func (s Server) Run(ctx context.Context) error {
-	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", s.port))
-	if err != nil {
-		return err
-	}
-
-	srv := grpc.NewServer()
+	mux := http.NewServeMux()
 
 	// usecases
 	user := usecase.NewUser()
@@ -39,21 +35,33 @@ func (s Server) Run(ctx context.Context) error {
 	// services
 	userService := service.NewUserService(user)
 
-	// register services
-	userpb.RegisterUserServiceServer(srv, userService)
+	// handlers
+	userPath, userHandler := v1connect.NewUserServiceHandler(userService)
+	mux.Handle(userPath, userHandler)
 
-	reflection.Register(srv)
+	srv := &http.Server{
+		Handler:           h2c.NewHandler(mux, &http2.Server{}),
+		Addr:              fmt.Sprintf(":%d", s.port),
+		WriteTimeout:      time.Second * 60,
+		ReadTimeout:       time.Second * 15,
+		ReadHeaderTimeout: time.Second * 15,
+		IdleTimeout:       time.Second * 120,
+	}
 
-	go func() {
-		slog.Info(fmt.Sprintf("start gRPC server port: %d", s.port))
-		srv.Serve(listener)
-	}()
+	eg, ctx := errgroup.WithContext(ctx)
+	eg.Go(func() error {
+		slog.Info(fmt.Sprintf("start Connect server port: %d", s.port))
+		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			return err
+		}
+		return nil
+	})
 
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, os.Interrupt)
-	<-quit
-	slog.Info("stopping gRPC server...")
-	srv.GracefulStop()
+	<-ctx.Done()
+	slog.Info("stopping Connect server...")
+	if err := srv.Shutdown(ctx); err != nil {
+		slog.Error("failed to shutdown", "error", err)
+	}
 
-	return nil
+	return eg.Wait()
 }
