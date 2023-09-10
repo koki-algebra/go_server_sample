@@ -15,7 +15,7 @@ GOOSE_DRIVER := postgres
 GOOSE_DBSTRING := "host=$(DB_HOST) user=$(DB_USER) dbname=$(DB_NAME) password=$(DB_PASSWORD) sslmode=disable"
 
 new: ## Create new migration file. e.g. $ make new NAME=add_user_table
-	@goose -dir migrations create $(NAME) sql
+	@goose -dir migrations -s create $(NAME) sql
 
 status: ## Show migration status
 	@goose -dir migrations $(GOOSE_DRIVER) $(GOOSE_DBSTRING) status
