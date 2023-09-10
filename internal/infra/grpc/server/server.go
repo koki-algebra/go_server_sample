@@ -6,8 +6,10 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"os"
 	"time"
 
+	"github.com/koki-algebra/go_server_sample/internal/infra/database"
 	"github.com/koki-algebra/go_server_sample/internal/infra/grpc/generated/user/v1/v1connect"
 	"github.com/koki-algebra/go_server_sample/internal/infra/grpc/service"
 	"github.com/koki-algebra/go_server_sample/internal/usecase"
@@ -29,8 +31,21 @@ func NewServer(port int) *Server {
 func (s Server) Run(ctx context.Context) error {
 	mux := http.NewServeMux()
 
+	// database
+	db, err := database.Open(
+		ctx,
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_PORT"),
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_PASSWORD"),
+		os.Getenv("DB_DATABASE"),
+	)
+	if err != nil {
+		return err
+	}
+
 	// usecases
-	user := usecase.NewUser()
+	user := usecase.NewUser(db)
 
 	// services
 	userService := service.NewUserService(user)

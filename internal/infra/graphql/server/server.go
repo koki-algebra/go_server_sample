@@ -11,6 +11,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/koki-algebra/go_server_sample/internal/infra/database"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -28,7 +29,20 @@ func (s Server) Run(ctx context.Context) error {
 	ctx, stop := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
 	defer stop()
 
-	router := NewRouter(ctx)
+	// connect to database
+	db, err := database.Open(
+		ctx,
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_PORT"),
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_PASSWORD"),
+		os.Getenv("DB_DATABASE"),
+	)
+	if err != nil {
+		return err
+	}
+
+	router := NewRouter(ctx, db)
 	srv := http.Server{
 		Addr:              fmt.Sprintf(":%d", s.port),
 		WriteTimeout:      time.Second * 60,

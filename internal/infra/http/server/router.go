@@ -2,6 +2,7 @@ package server
 
 import (
 	middleware "github.com/deepmap/oapi-codegen/pkg/chi-middleware"
+	"github.com/uptrace/bun"
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/go-chi/chi/v5"
@@ -10,7 +11,7 @@ import (
 	"github.com/koki-algebra/go_server_sample/internal/usecase"
 )
 
-func newRouter(swagger *openapi3.T) *chi.Mux {
+func newRouter(swagger *openapi3.T, db *bun.DB) *chi.Mux {
 	router := chi.NewRouter()
 
 	// Use our validation middleware to check all requests against the OpenAPI schema.
@@ -18,7 +19,7 @@ func newRouter(swagger *openapi3.T) *chi.Mux {
 	router.Use()
 
 	// user handler
-	userUsecase := usecase.NewUser()
+	userUsecase := usecase.NewUser(db)
 	user := handler.NewUser(userUsecase)
 	generated.HandlerFromMux(user, router)
 

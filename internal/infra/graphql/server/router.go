@@ -12,9 +12,10 @@ import (
 	"github.com/koki-algebra/go_server_sample/internal/infra/graphql/resolver"
 	"github.com/koki-algebra/go_server_sample/internal/usecase"
 	"github.com/rs/cors"
+	"github.com/uptrace/bun"
 )
 
-func NewRouter(ctx context.Context) http.Handler {
+func NewRouter(ctx context.Context, db *bun.DB) http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
 		if _, err := w.Write([]byte("ping")); err != nil {
@@ -25,7 +26,7 @@ func NewRouter(ctx context.Context) http.Handler {
 	})
 
 	// usecases
-	user := usecase.NewUser()
+	user := usecase.NewUser(db)
 
 	// resolvers
 	resolvers := resolver.New(user)

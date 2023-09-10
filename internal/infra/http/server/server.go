@@ -11,6 +11,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/koki-algebra/go_server_sample/internal/infra/database"
 	"github.com/koki-algebra/go_server_sample/internal/infra/http/generated"
 	"golang.org/x/sync/errgroup"
 )
@@ -29,6 +30,18 @@ func (s Server) Run(ctx context.Context) error {
 	ctx, stop := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
 	defer stop()
 
+	db, err := database.Open(
+		ctx,
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_PORT"),
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_PASSWORD"),
+		os.Getenv("DB_DATABASE"),
+	)
+	if err != nil {
+		return err
+	}
+
 	swagger, err := generated.GetSwagger()
 	if err != nil {
 		return err
@@ -37,7 +50,7 @@ func (s Server) Run(ctx context.Context) error {
 	// Clear out the servers array in the swagger spec, that skips validating that server names match. We don't know how this thing will be run.
 	swagger.Servers = nil
 
-	router := newRouter(swagger)
+	router := newRouter(swagger, db)
 
 	srv := &http.Server{
 		Handler:           router,
