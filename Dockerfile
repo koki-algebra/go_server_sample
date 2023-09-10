@@ -1,7 +1,7 @@
 FROM golang:1.21.0-bullseye AS builder
 
 ENV ROOT=/go/src
-ENV BUILD_DIR=cmd/graphql
+ENV BUILD_DIR=cmd/grpc
 
 COPY . ${ROOT}
 

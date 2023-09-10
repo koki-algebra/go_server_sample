@@ -21,9 +21,13 @@ func NewUserService(usecase *usecase.User) v1connect.UserServiceHandler {
 }
 
 func (s *UserService) GetByID(ctx context.Context, req *connect.Request[userv1.GetByIDRequest]) (*connect.Response[userv1.GetByIDResponse], error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+
 	user, err := s.usecase.GetByID(ctx, req.Msg.Id)
 	if err != nil {
-		return nil, err
+		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
 	return convertUser(user), nil
@@ -34,10 +38,8 @@ func convertUser(user *entity.User) *connect.Response[userv1.GetByIDResponse] {
 		return nil
 	}
 
-	return &connect.Response[userv1.GetByIDResponse]{
-		Msg: &userv1.GetByIDResponse{
-			Id:   user.ID,
-			Name: user.Name,
-		},
-	}
+	return connect.NewResponse[userv1.GetByIDResponse](&userv1.GetByIDResponse{
+		Id:   user.ID,
+		Name: user.Name,
+	})
 }
