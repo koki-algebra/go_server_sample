@@ -3,7 +3,8 @@
 
 run: ## Start Application
 	@make generate
-	@docker compose up --build -d
+	@docker compose build --no-cache
+	@docker compose up -d
 
 generate: ## Generate code
 	@rm -rf internal/infra/grpc/generated

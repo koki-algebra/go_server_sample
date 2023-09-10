@@ -1,4 +1,4 @@
-FROM golang:1.21.0-bullseye AS builder
+FROM golang:1.21.1-bullseye AS builder
 
 ENV ROOT=/go/src
 ENV BUILD_DIR=cmd/grpc
