@@ -6,8 +6,6 @@ import (
 	"fmt"
 
 	_ "github.com/lib/pq"
-	"github.com/uptrace/bun"
-	"github.com/uptrace/bun/dialect/pgdialect"
 )
 
 func Open(ctx context.Context, host, port, user, password, database string) (*sql.DB, error) {
@@ -24,8 +22,4 @@ func Open(ctx context.Context, host, port, user, password, database string) (*sq
 	}
 
 	return db, nil
-}
-
-func OpenBun(db *sql.DB) *bun.DB {
-	return bun.NewDB(db, pgdialect.New())
 }

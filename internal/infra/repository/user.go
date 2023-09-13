@@ -2,15 +2,17 @@ package repository
 
 import (
 	"context"
+	"database/sql"
 
 	"github.com/koki-algebra/go_server_sample/internal/entity"
 	"github.com/koki-algebra/go_server_sample/internal/repository"
 	"github.com/uptrace/bun"
+	"github.com/uptrace/bun/dialect/pgdialect"
 )
 
-func NewUserRepository(db *bun.DB) repository.UserRepository {
+func NewUserRepository(sqldb *sql.DB) repository.UserRepository {
 	return &userRepositoryImpl{
-		db: db,
+		db: bun.NewDB(sqldb, pgdialect.New()),
 	}
 }
 

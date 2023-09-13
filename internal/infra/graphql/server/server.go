@@ -30,7 +30,7 @@ func (s Server) Run(ctx context.Context) error {
 	defer stop()
 
 	// connect to database
-	sqldb, err := database.Open(
+	db, err := database.Open(
 		ctx,
 		os.Getenv("DB_HOST"),
 		os.Getenv("DB_PORT"),
@@ -41,9 +41,9 @@ func (s Server) Run(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	defer sqldb.Close()
+	defer db.Close()
 
-	router := NewRouter(ctx, sqldb)
+	router := NewRouter(ctx, db)
 	srv := http.Server{
 		Addr:              fmt.Sprintf(":%d", s.port),
 		WriteTimeout:      time.Second * 60,

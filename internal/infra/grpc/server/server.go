@@ -34,7 +34,7 @@ func (s Server) Run(ctx context.Context) error {
 	mux := http.NewServeMux()
 
 	// database
-	sqldb, err := database.Open(
+	db, err := database.Open(
 		ctx,
 		os.Getenv("DB_HOST"),
 		os.Getenv("DB_PORT"),
@@ -45,13 +45,11 @@ func (s Server) Run(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
-	defer sqldb.Close()
-
-	bundb := database.OpenBun(sqldb)
+	defer db.Close()
 
 	// repository
-	userRepository := repository.NewUserRepository(bundb)
-	groupRepository := repository.NewGroupRepository(sqldb)
+	userRepository := repository.NewUserRepository(db)
+	groupRepository := repository.NewGroupRepository(db)
 
 	// usecases
 	user := usecase.NewUser(userRepository)
