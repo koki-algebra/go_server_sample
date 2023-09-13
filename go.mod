@@ -10,7 +10,6 @@ require (
 	github.com/oapi-codegen/runtime v1.0.0
 	github.com/uptrace/bun v1.1.15
 	github.com/uptrace/bun/dialect/pgdialect v1.1.15
-	github.com/uptrace/bun/driver/pgdriver v1.1.15
 	github.com/vektah/gqlparser/v2 v2.5.8
 	google.golang.org/protobuf v1.31.0
 )
@@ -34,16 +33,15 @@ require (
 	github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc // indirect
 	github.com/vmihailenco/msgpack/v5 v5.3.5 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
-	golang.org/x/crypto v0.13.0 // indirect
 	golang.org/x/sys v0.12.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	mellium.im/sasl v0.3.1 // indirect
 )
 
 require (
 	github.com/agnivade/levenshtein v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.14.0
 	github.com/go-chi/render v1.0.3
+	github.com/lib/pq v1.10.9
 	github.com/rs/cors v1.9.0
 	golang.org/x/net v0.15.0
 	golang.org/x/sync v0.3.0

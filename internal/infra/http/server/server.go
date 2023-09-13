@@ -41,6 +41,7 @@ func (s Server) Run(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
+	defer db.Close()
 
 	swagger, err := generated.GetSwagger()
 	if err != nil {
