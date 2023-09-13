@@ -2,7 +2,6 @@
 .DEFAULT_GOAL := help
 
 run: ## Start Application
-	@make generate
 	@docker compose build --no-cache
 	@docker compose up -d
 
@@ -11,6 +10,7 @@ generate: ## Generate code
 	@cd configs && buf generate ../api/proto
 	@cd configs && gqlgen generate
 	@cd api/http && oapi-codegen -config config.yml openapi.yml
+	@cd configs && sqlboiler psql
 
 fmt: ## format code
 	@go fmt ./...

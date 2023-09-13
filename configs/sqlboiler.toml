@@ -1,0 +1,15 @@
+output = "../internal/infra/database/generated/sqlboiler"
+pkgname = "model"
+wipe = true
+no-tests = true
+add-enum-types = true
+
+[psql]
+	dbname = "app"
+	host = "localhost"
+	port = 5432
+	user = "app"
+	pass = "password"
+	sslmode = "disable"
+	schema = "public"
+	blacklist = ["goose_db_version", "other"]
