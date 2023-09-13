@@ -35,7 +35,7 @@ func convertGroup(group *model.Group) *entity.Group {
 	}
 
 	return &entity.Group{
-		ID: group.ID,
+		ID:   group.ID,
 		Name: group.Name,
 	}
 }

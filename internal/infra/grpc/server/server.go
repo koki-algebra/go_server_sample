@@ -10,7 +10,8 @@ import (
 	"time"
 
 	"github.com/koki-algebra/go_server_sample/internal/infra/database"
-	"github.com/koki-algebra/go_server_sample/internal/infra/grpc/generated/user/v1/v1connect"
+	groupv1 "github.com/koki-algebra/go_server_sample/internal/infra/grpc/generated/group/v1/v1connect"
+	userv1 "github.com/koki-algebra/go_server_sample/internal/infra/grpc/generated/user/v1/v1connect"
 	"github.com/koki-algebra/go_server_sample/internal/infra/grpc/service"
 	"github.com/koki-algebra/go_server_sample/internal/infra/repository"
 	"github.com/koki-algebra/go_server_sample/internal/usecase"
@@ -50,16 +51,19 @@ func (s Server) Run(ctx context.Context) error {
 
 	// repository
 	userRepository := repository.NewUserRepository(bundb)
+	groupRepository := repository.NewGroupRepository(sqldb)
 
 	// usecases
 	user := usecase.NewUser(userRepository)
+	group := usecase.NewGroup(groupRepository)
 
 	// services
 	userService := service.NewUserService(user)
+	groupService := service.NewGroupService(group)
 
 	// handlers
-	userPath, userHandler := v1connect.NewUserServiceHandler(userService)
-	mux.Handle(userPath, userHandler)
+	mux.Handle(userv1.NewUserServiceHandler(userService))
+	mux.Handle(groupv1.NewGroupServiceHandler(groupService))
 
 	srv := &http.Server{
 		Handler:           h2c.NewHandler(mux, &http2.Server{}),
