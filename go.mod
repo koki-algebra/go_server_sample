@@ -5,12 +5,15 @@ go 1.21.0
 require (
 	github.com/99designs/gqlgen v0.17.36
 	github.com/bufbuild/connect-go v1.10.0
+	github.com/friendsofgo/errors v0.9.2
 	github.com/getkin/kin-openapi v0.120.0
 	github.com/go-chi/chi/v5 v5.0.10
 	github.com/oapi-codegen/runtime v1.0.0
 	github.com/uptrace/bun v1.1.15
 	github.com/uptrace/bun/dialect/pgdialect v1.1.15
 	github.com/vektah/gqlparser/v2 v2.5.8
+	github.com/volatiletech/sqlboiler/v4 v4.15.0
+	github.com/volatiletech/strmangle v0.0.5
 	google.golang.org/protobuf v1.31.0
 )
 
@@ -30,10 +33,13 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect
 	github.com/perimeterx/marshmallow v1.1.5 // indirect
+	github.com/spf13/cast v1.5.0 // indirect
 	github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc // indirect
 	github.com/vmihailenco/msgpack/v5 v5.3.5 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
+	github.com/volatiletech/inflect v0.0.1 // indirect
 	golang.org/x/sys v0.12.0 // indirect
+	golang.org/x/xerrors v0.0.0-20220609144429-65e65417b02f // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
