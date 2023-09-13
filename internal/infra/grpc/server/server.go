@@ -12,6 +12,7 @@ import (
 	"github.com/koki-algebra/go_server_sample/internal/infra/database"
 	"github.com/koki-algebra/go_server_sample/internal/infra/grpc/generated/user/v1/v1connect"
 	"github.com/koki-algebra/go_server_sample/internal/infra/grpc/service"
+	"github.com/koki-algebra/go_server_sample/internal/infra/repository"
 	"github.com/koki-algebra/go_server_sample/internal/usecase"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
@@ -32,7 +33,7 @@ func (s Server) Run(ctx context.Context) error {
 	mux := http.NewServeMux()
 
 	// database
-	db, err := database.Open(
+	sqldb, err := database.Open(
 		ctx,
 		os.Getenv("DB_HOST"),
 		os.Getenv("DB_PORT"),
@@ -43,9 +44,15 @@ func (s Server) Run(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
+	defer sqldb.Close()
+
+	bundb := database.OpenBun(sqldb)
+
+	// repository
+	userRepository := repository.NewUserRepository(bundb)
 
 	// usecases
-	user := usecase.NewUser(db)
+	user := usecase.NewUser(userRepository)
 
 	// services
 	userService := service.NewUserService(user)
