@@ -20,7 +20,7 @@ lint: ## lint code
 	@cd configs && buf lint ../api/proto
 
 clear: ## Clear Application
-	@docker compose down
+	@docker compose down --volumes
 
 help: ## Show help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
