@@ -1,7 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE TABLE IF NOT EXISTS groups (
-	id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+	id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
 	name TEXT NOT NULL
 );
 

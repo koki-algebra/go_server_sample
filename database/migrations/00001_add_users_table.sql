@@ -1,9 +1,7 @@
 -- +goose Up
 -- +goose StatementBegin
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
 CREATE TABLE IF NOT EXISTS users (
-	id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+	id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
 	name TEXT NOT NULL
 );
 
