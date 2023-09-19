@@ -22,6 +22,9 @@ lint: ## lint code
 clear: ## Clear Application
 	@docker compose down --volumes
 
+logs: ## Show API server logs
+	@docker compose logs -f api_server
+
 help: ## Show help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
 		awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
