@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"time"
 
 	_ "github.com/lib/pq"
 )
@@ -17,6 +18,8 @@ func Open(ctx context.Context, host, port, user, password, database string) (*sq
 	}
 
 	// verify connection
+	ctx, cancel := context.WithTimeout(ctx, time.Second*2)
+	defer cancel()
 	if err := db.PingContext(ctx); err != nil {
 		return nil, err
 	}
