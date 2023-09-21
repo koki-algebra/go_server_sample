@@ -1,8 +1,10 @@
 .PHONY: help
 .DEFAULT_GOAL := help
 
+PROTOCOL := "grpc"
+
 run: ## Start Application
-	@docker compose build --no-cache
+	@docker compose build --no-cache --build-arg PROTOCOL=$(PROTOCOL)
 	@docker compose up -d
 
 generate: ## Generate code

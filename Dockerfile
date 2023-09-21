@@ -1,13 +1,14 @@
 FROM golang:1.21.1 AS builder
 
+ARG PROTOCOL=grpc
+
 ENV ROOT=/go/src
-ENV BUILD_DIR=cmd/grpc
 
 COPY . ${ROOT}
 
 WORKDIR ${ROOT}
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main ${BUILD_DIR}/main.go
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main cmd/${PROTOCOL}/main.go
 
 
 FROM alpine:3.18.3 AS deploy
