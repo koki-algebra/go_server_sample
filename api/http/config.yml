@@ -1,8 +1,8 @@
-package: generated
+package: oapi
 generate:
   chi-server: true
   models: true
   embedded-spec: true
 compatibility:
   apply-chi-middleware-first-to-last: true
-output: ../../internal/infra/http/generated/generated.go
+output: ../../internal/infra/http/oapi/generated.go

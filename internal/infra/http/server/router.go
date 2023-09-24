@@ -4,29 +4,36 @@ import (
 	"database/sql"
 
 	middleware "github.com/deepmap/oapi-codegen/pkg/chi-middleware"
-
-	"github.com/getkin/kin-openapi/openapi3"
-	"github.com/go-chi/chi/v5"
-	"github.com/koki-algebra/go_server_sample/internal/infra/http/generated"
-	"github.com/koki-algebra/go_server_sample/internal/infra/http/handler"
+	"github.com/koki-algebra/go_server_sample/internal/infra/http/controller"
+	"github.com/koki-algebra/go_server_sample/internal/infra/http/oapi"
 	"github.com/koki-algebra/go_server_sample/internal/infra/repository"
 	"github.com/koki-algebra/go_server_sample/internal/usecase"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/httplog"
 )
 
-func newRouter(swagger *openapi3.T, db *sql.DB) *chi.Mux {
-	router := chi.NewRouter()
+func newRouter(db *sql.DB) (*chi.Mux, error) {
+	r := chi.NewRouter()
 
-	// Use our validation middleware to check all requests against the OpenAPI schema.
-	router.Use(middleware.OapiRequestValidator(swagger))
-	router.Use()
+	swagger, err := oapi.GetSwagger()
+	if err != nil {
+		return nil, err
+	}
+	swagger.Servers = nil
+	r.Use(middleware.OapiRequestValidator(swagger))
 
-	// repository
-	userRepository := repository.NewUserRepository(db)
+	// logger
+	logger := httplog.NewLogger("app", httplog.Options{
+		JSON: true,
+	})
+	r.Use(httplog.RequestLogger(logger))
 
 	// user handler
-	userUsecase := usecase.NewUser(userRepository)
-	user := handler.NewUser(userUsecase)
-	generated.HandlerFromMux(user, router)
+	user := usecase.NewUser(repository.NewUserRepository(db))
 
-	return router
+	ctrl := controller.New(user)
+	oapi.HandlerFromMux(ctrl, r)
+
+	return r, nil
 }

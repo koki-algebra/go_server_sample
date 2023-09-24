@@ -12,7 +12,6 @@ import (
 	"time"
 
 	"github.com/koki-algebra/go_server_sample/internal/infra/database"
-	"github.com/koki-algebra/go_server_sample/internal/infra/http/generated"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -43,15 +42,10 @@ func (s Server) Run(ctx context.Context) error {
 	}
 	defer db.Close()
 
-	swagger, err := generated.GetSwagger()
+	router, err := newRouter(db)
 	if err != nil {
 		return err
 	}
-
-	// Clear out the servers array in the swagger spec, that skips validating that server names match. We don't know how this thing will be run.
-	swagger.Servers = nil
-
-	router := newRouter(swagger, db)
 
 	srv := &http.Server{
 		Handler:           router,
