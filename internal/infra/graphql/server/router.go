@@ -22,7 +22,7 @@ import (
 	"github.com/koki-algebra/go_server_sample/internal/usecase"
 )
 
-func NewRouter(ctx context.Context, sqldb *sql.DB) http.Handler {
+func newRouter(ctx context.Context, sqldb *sql.DB) http.Handler {
 	// Logger
 	logger := httplog.NewLogger("graphql", httplog.Options{
 		LogLevel:         slog.LevelInfo,

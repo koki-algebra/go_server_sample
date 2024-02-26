@@ -36,7 +36,7 @@ func (s Server) Run(ctx context.Context) error {
 	}
 	defer db.Close()
 
-	router, err := newRouter(db)
+	router, err := newRouter(ctx, db)
 	if err != nil {
 		return err
 	}
