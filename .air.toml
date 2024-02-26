@@ -7,7 +7,7 @@ tmp_dir = "docker/tmp"
 
 [build]
 # Just plain old shell command. You could use `make` as well.
-cmd = "CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o ./docker/tmp/main ./cmd/graphql"
+cmd = "CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o ./docker/tmp/main ./cmd/grpc"
 # Binary file yields from `cmd`.
 bin = "./docker/tmp/main"
 # Watch these filename extensions.

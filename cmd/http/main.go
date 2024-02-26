@@ -17,13 +17,10 @@ func main() {
 }
 
 func run(ctx context.Context) error {
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-	slog.SetDefault(logger)
-
 	if err := config.Init(); err != nil {
 		return err
 	}
 
-	srv := server.NewServer(8080)
+	srv := server.NewServer()
 	return srv.Run(ctx)
 }

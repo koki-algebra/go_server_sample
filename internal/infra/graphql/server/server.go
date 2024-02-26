@@ -13,17 +13,14 @@ import (
 
 	"golang.org/x/sync/errgroup"
 
+	"github.com/koki-algebra/go_server_sample/internal/infra/config"
 	"github.com/koki-algebra/go_server_sample/internal/infra/database"
 )
 
-type Server struct {
-	port int
-}
+type Server struct{}
 
-func NewServer(port int) *Server {
-	return &Server{
-		port: port,
-	}
+func NewServer() *Server {
+	return &Server{}
 }
 
 func (s Server) Run(ctx context.Context) error {
@@ -39,7 +36,7 @@ func (s Server) Run(ctx context.Context) error {
 
 	router := newRouter(ctx, db)
 	srv := http.Server{
-		Addr:              fmt.Sprintf(":%d", s.port),
+		Addr:              fmt.Sprintf(":%d", config.Env.ServerPort),
 		WriteTimeout:      time.Second * 60,
 		ReadTimeout:       time.Second * 15,
 		ReadHeaderTimeout: time.Second * 15,
@@ -49,7 +46,7 @@ func (s Server) Run(ctx context.Context) error {
 
 	eg, ctx := errgroup.WithContext(ctx)
 	eg.Go(func() error {
-		slog.Info(fmt.Sprintf("start GraphQL server port: %d", s.port))
+		slog.Info(fmt.Sprintf("start GraphQL server port: %d", config.Env.ServerPort))
 		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			return err
 		}

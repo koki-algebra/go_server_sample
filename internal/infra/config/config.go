@@ -13,6 +13,7 @@ type EnvConfig struct {
 	DBPassword string `env:"DB_PASSWORD"`
 	DBDatabase string `env:"DB_DATABASE"`
 
+	ServerPort         int    `env:"SERVER_PORT" envDefault:"80"`
 	ServerAllowOrigins string `env:"SERVER_ALLOW_ORIGINS"`
 }
 

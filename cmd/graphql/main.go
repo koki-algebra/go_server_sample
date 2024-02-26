@@ -21,6 +21,6 @@ func run(ctx context.Context) error {
 		return err
 	}
 
-	srv := server.NewServer(8080)
+	srv := server.NewServer()
 	return srv.Run(ctx)
 }
