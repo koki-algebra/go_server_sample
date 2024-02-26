@@ -18,13 +18,14 @@ generate: ## Generate code
 	@cd api/http && oapi-codegen -config config.yml openapi.yml
 
 .PHONY: fmt
-fmt: ## format code
+fmt: ## Format code
 	@go fmt ./...
 	@buf format -w ./api/proto
 
 .PHONY: lint
-lint: ## lint code
+lint: ## Lint code
 	@buf lint ./api/proto
+	@golangci-lint run
 
 .PHONY: clear
 clear: ## Clear Application

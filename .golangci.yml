@@ -1,0 +1,28 @@
+linters:
+  disable-all: true
+  enable:
+    - errcheck
+    - gosimple
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    - gofmt
+    - lll
+    - gci
+    - misspell
+    - whitespace
+    - tparallel
+
+linters-settings:
+  gci:
+    sections:
+      - standard
+      - default
+      - prefix(github.com/koki-algebra/go_server_sample)
+      - blank
+      - dot
+
+run:
+  skip-dirs:
+    - ent/

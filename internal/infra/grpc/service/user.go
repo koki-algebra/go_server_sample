@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/bufbuild/connect-go"
+
 	"github.com/koki-algebra/go_server_sample/internal/entity"
 	userv1 "github.com/koki-algebra/go_server_sample/internal/infra/grpc/generated/user/v1"
 	"github.com/koki-algebra/go_server_sample/internal/infra/grpc/generated/user/v1/v1connect"
@@ -20,7 +21,10 @@ func NewUserService(usecase *usecase.User) v1connect.UserServiceHandler {
 	}
 }
 
-func (s *UserService) GetByID(ctx context.Context, req *connect.Request[userv1.GetByIDRequest]) (*connect.Response[userv1.GetByIDResponse], error) {
+func (s *UserService) GetByID(
+	ctx context.Context,
+	req *connect.Request[userv1.GetByIDRequest],
+) (*connect.Response[userv1.GetByIDResponse], error) {
 	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
