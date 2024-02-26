@@ -12,12 +12,13 @@ require (
 	github.com/go-chi/httplog/v2 v2.0.9
 	github.com/go-chi/render v1.0.3
 	github.com/oapi-codegen/runtime v1.0.0
+	github.com/sourcegraph/conc v0.3.0
 	github.com/uptrace/bun v1.1.15
 	github.com/uptrace/bun/dialect/pgdialect v1.1.15
 	github.com/vektah/gqlparser/v2 v2.5.8
 	github.com/volatiletech/sqlboiler/v4 v4.16.2
 	github.com/volatiletech/strmangle v0.0.6
-	google.golang.org/protobuf v1.31.0
+	google.golang.org/protobuf v1.32.0
 )
 
 require (
@@ -43,7 +44,8 @@ require (
 	github.com/vmihailenco/msgpack/v5 v5.3.5 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	github.com/volatiletech/inflect v0.0.1 // indirect
-	golang.org/x/crypto v0.19.0 // indirect
+	go.uber.org/atomic v1.7.0 // indirect
+	go.uber.org/multierr v1.9.0 // indirect
 	golang.org/x/sys v0.17.0 // indirect
 	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
@@ -54,7 +56,6 @@ require (
 	github.com/deepmap/oapi-codegen v1.14.0
 	github.com/lib/pq v1.10.9
 	github.com/rs/cors v1.9.0
-	golang.org/x/net v0.19.0
-	golang.org/x/sync v0.5.0
+	golang.org/x/net v0.21.0
 	golang.org/x/text v0.14.0 // indirect
 )

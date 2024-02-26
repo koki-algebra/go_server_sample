@@ -11,7 +11,7 @@ import (
 	"syscall"
 	"time"
 
-	"golang.org/x/sync/errgroup"
+	"github.com/sourcegraph/conc/pool"
 
 	"github.com/koki-algebra/go_server_sample/internal/infra/config"
 	"github.com/koki-algebra/go_server_sample/internal/infra/database"
@@ -44,9 +44,9 @@ func (s Server) Run(ctx context.Context) error {
 		Handler:           router,
 	}
 
-	eg, ctx := errgroup.WithContext(ctx)
-	eg.Go(func() error {
-		slog.Info(fmt.Sprintf("start GraphQL server port: %d", config.Env.ServerPort))
+	pool := pool.New().WithErrors().WithContext(ctx)
+	pool.Go(func(ctx context.Context) error {
+		slog.InfoContext(ctx, fmt.Sprintf("start HTTP server port: %d", config.Env.ServerPort))
 		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			return err
 		}
@@ -59,5 +59,5 @@ func (s Server) Run(ctx context.Context) error {
 		slog.Error("failed to shutdown", "error", err)
 	}
 
-	return eg.Wait()
+	return pool.Wait()
 }
