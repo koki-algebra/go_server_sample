@@ -2,14 +2,11 @@ version: "3.9"
 
 services:
   api_server:
-    image: api_server
+    image: cosmtrek/air:latest
     container_name: api_server
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: deploy
     tty: true
     stdin_open: true
+    working_dir: /workspaces
     environment:
       - TZ=Asia/Tokyo
       - DB_USER=app
@@ -22,6 +19,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    volumes:
+      - ./:/workspaces
 
   db:
     image: postgres:15.4
