@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
-	"os"
 	"time"
 
 	"golang.org/x/net/http2"
@@ -34,14 +33,7 @@ func (s Server) Run(ctx context.Context) error {
 	mux := http.NewServeMux()
 
 	// database
-	db, err := database.Open(
-		ctx,
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_PORT"),
-		os.Getenv("DB_USER"),
-		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_DATABASE"),
-	)
+	db, err := database.Open(ctx)
 	if err != nil {
 		return err
 	}
