@@ -11,8 +11,9 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/koki-algebra/go_server_sample/internal/infra/database"
 	"golang.org/x/sync/errgroup"
+
+	"github.com/koki-algebra/go_server_sample/internal/infra/database"
 )
 
 type Server struct {

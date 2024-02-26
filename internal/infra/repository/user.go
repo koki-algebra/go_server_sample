@@ -4,10 +4,11 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/koki-algebra/go_server_sample/internal/entity"
-	"github.com/koki-algebra/go_server_sample/internal/repository"
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/pgdialect"
+
+	"github.com/koki-algebra/go_server_sample/internal/entity"
+	"github.com/koki-algebra/go_server_sample/internal/repository"
 )
 
 func NewUserRepository(sqldb *sql.DB) repository.UserRepository {

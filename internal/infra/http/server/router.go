@@ -4,13 +4,13 @@ import (
 	"database/sql"
 
 	middleware "github.com/deepmap/oapi-codegen/pkg/chi-middleware"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/httplog"
+
 	"github.com/koki-algebra/go_server_sample/internal/infra/http/controller"
 	"github.com/koki-algebra/go_server_sample/internal/infra/http/oapi"
 	"github.com/koki-algebra/go_server_sample/internal/infra/repository"
 	"github.com/koki-algebra/go_server_sample/internal/usecase"
-
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/httplog"
 )
 
 func newRouter(db *sql.DB) (*chi.Mux, error) {

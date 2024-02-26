@@ -9,11 +9,12 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/rs/cors"
+
 	"github.com/koki-algebra/go_server_sample/internal/infra/graphql/generated"
 	"github.com/koki-algebra/go_server_sample/internal/infra/graphql/resolver"
 	"github.com/koki-algebra/go_server_sample/internal/infra/repository"
 	"github.com/koki-algebra/go_server_sample/internal/usecase"
-	"github.com/rs/cors"
 )
 
 func NewRouter(ctx context.Context, sqldb *sql.DB) http.Handler {
