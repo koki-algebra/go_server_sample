@@ -1,4 +1,4 @@
-output = "../internal/infra/database/generated/sqlboiler"
+output = "./internal/infra/database/generated/sqlboiler"
 pkgname = "model"
 wipe = true
 no-tests = true
