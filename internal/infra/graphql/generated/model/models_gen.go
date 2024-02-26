@@ -9,10 +9,10 @@ type Query struct {
 }
 
 type SaveInput struct {
-	Name string `json:"Name"`
+	Name string `json:"name"`
 }
 
 type User struct {
-	ID   string `json:"ID"`
-	Name string `json:"Name"`
+	ID   string `json:"id"`
+	Name string `json:"name"`
 }

@@ -1,16 +1,16 @@
 extend type Query {
-	GetByID(id: ID!): User!
+  user(id: ID!): User!
 }
 
 extend type Mutation {
-	Save(input: SaveInput!): User!
+  Save(input: SaveInput!): User!
 }
 
 type User {
-	ID: ID!
-	Name: String!
+  id: ID!
+  name: String!
 }
 
 input SaveInput {
-	Name: String!
+  name: String!
 }
