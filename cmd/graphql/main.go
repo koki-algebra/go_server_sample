@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"os"
 
+	"github.com/koki-algebra/go_server_sample/internal/infra/config"
 	"github.com/koki-algebra/go_server_sample/internal/infra/graphql/server"
 )
 
@@ -16,8 +17,9 @@ func main() {
 }
 
 func run(ctx context.Context) error {
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-	slog.SetDefault(logger)
+	if err := config.Init(); err != nil {
+		return err
+	}
 
 	srv := server.NewServer(8080)
 	return srv.Run(ctx)

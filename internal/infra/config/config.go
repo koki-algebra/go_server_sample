@@ -12,6 +12,8 @@ type EnvConfig struct {
 	DBUser     string `env:"DB_USER"`
 	DBPassword string `env:"DB_PASSWORD"`
 	DBDatabase string `env:"DB_DATABASE"`
+
+	ServerAllowOrigins string `env:"SERVER_ALLOW_ORIGINS"`
 }
 
 func Init() error {
