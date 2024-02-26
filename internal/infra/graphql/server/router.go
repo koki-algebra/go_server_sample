@@ -3,14 +3,19 @@ package server
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"log/slog"
 	"net/http"
+	"strings"
+	"time"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/httplog/v2"
 	"github.com/rs/cors"
 
+	"github.com/koki-algebra/go_server_sample/internal/infra/config"
 	"github.com/koki-algebra/go_server_sample/internal/infra/graphql/generated"
 	"github.com/koki-algebra/go_server_sample/internal/infra/graphql/resolver"
 	"github.com/koki-algebra/go_server_sample/internal/infra/repository"
@@ -18,36 +23,55 @@ import (
 )
 
 func NewRouter(ctx context.Context, sqldb *sql.DB) http.Handler {
-	mux := http.NewServeMux()
-	mux.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
-		if _, err := w.Write([]byte("ping")); err != nil {
-			slog.Error("error in writing response body", "error", fmt.Sprintf("%+v", err))
-			http.Error(w, "internal server error", http.StatusInternalServerError)
-			return
-		}
+	// Logger
+	logger := httplog.NewLogger("graphql", httplog.Options{
+		LogLevel:         slog.LevelInfo,
+		LevelFieldName:   "severity",
+		MessageFieldName: "message",
+		JSON:             true,
+		Concise:          false,
+		RequestHeaders:   true,
+		TimeFieldFormat:  time.RFC3339,
+		TimeFieldName:    "time",
+		QuietDownRoutes: []string{
+			"/",
+			"/ping",
+		},
+		QuietDownPeriod: 10 * time.Second,
+		SourceFieldName: "logging.googleapis.com/sourceLocation",
 	})
 
-	// repository
-	userRepository := repository.NewUserRepository(sqldb)
+	var (
+		// repository
+		userRepository = repository.NewUserRepository(sqldb)
 
-	// usecases
-	user := usecase.NewUser(userRepository)
+		// usecase
+		user = usecase.NewUser(userRepository)
+	)
 
 	// resolvers
 	resolvers := resolver.New(user)
 
-	cfg := generated.Config{Resolvers: resolvers}
+	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{
+		Resolvers: resolvers,
+	}))
 
-	gqlSrv := handler.NewDefaultServer(generated.NewExecutableSchema(cfg))
+	// Initialize router
+	router := chi.NewRouter()
 
-	mux.Handle("/graphql", gqlSrv)
-	mux.Handle("/playground", playground.Handler("GraphQL Playground", "/graphql"))
+	// Apply middleware
+	router.Use(
+		httplog.RequestLogger(logger),
+		middleware.Heartbeat("/ping"),
+		cors.New(cors.Options{
+			AllowedOrigins: strings.Split(config.Env.ServerAllowOrigins, ","),
+			AllowedMethods: []string{http.MethodGet, http.MethodPost, http.MethodOptions},
+			AllowedHeaders: []string{"Authorization", "Content-Type"},
+		}).Handler,
+	)
 
-	router := cors.New(cors.Options{
-		AllowedOrigins: []string{"*"},
-		AllowedMethods: []string{http.MethodGet, http.MethodPost, http.MethodOptions},
-		AllowedHeaders: []string{"Authorization", "Content-Type"},
-	}).Handler(mux)
+	router.Handle("/graphql", srv)
+	router.Handle("/playground", playground.Handler("GraphQL Playground", "/graphql"))
 
 	return router
 }
