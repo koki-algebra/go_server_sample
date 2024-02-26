@@ -1,0 +1,32 @@
+{
+	// Golang
+	"go.toolsManagement.autoUpdate": true,
+	"go.lintTool": "golangci-lint",
+	"go.lintFlags": [
+		"--config=${workspaceFolder}/.golangci.yml",
+		"--fast"
+	],
+	// Markdown
+	"markdown.preview.breaks": true,
+	"[markdown]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.insertSpaces": true,
+		"editor.tabSize": 2
+	},
+	// SQL
+	"[sql]": {
+		"editor.defaultFormatter": "adpyke.vscode-sql-formatter"
+	},
+	// YAML
+	"[yaml]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.insertSpaces": true,
+		"editor.tabSize": 2
+	},
+	// GraphQL
+	"[graphql]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.insertSpaces": true,
+		"editor.tabSize": 2
+	}
+}
