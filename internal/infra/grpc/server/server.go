@@ -12,26 +12,17 @@ import (
 	"golang.org/x/net/http2/h2c"
 	"golang.org/x/sync/errgroup"
 
+	"github.com/koki-algebra/go_server_sample/internal/infra/config"
 	"github.com/koki-algebra/go_server_sample/internal/infra/database"
-	userv1 "github.com/koki-algebra/go_server_sample/internal/infra/grpc/generated/user/v1/v1connect"
-	"github.com/koki-algebra/go_server_sample/internal/infra/grpc/service"
-	"github.com/koki-algebra/go_server_sample/internal/infra/repository"
-	"github.com/koki-algebra/go_server_sample/internal/usecase"
 )
 
-type Server struct {
-	port int
-}
+type Server struct{}
 
-func NewServer(port int) *Server {
-	return &Server{
-		port: port,
-	}
+func NewServer() *Server {
+	return &Server{}
 }
 
 func (s Server) Run(ctx context.Context) error {
-	mux := http.NewServeMux()
-
 	// database
 	db, err := database.Open(ctx)
 	if err != nil {
@@ -39,21 +30,11 @@ func (s Server) Run(ctx context.Context) error {
 	}
 	defer db.Close()
 
-	// repository
-	userRepository := repository.NewUserRepository(db)
-
-	// usecases
-	user := usecase.NewUser(userRepository)
-
-	// services
-	userService := service.NewUserService(user)
-
-	// handlers
-	mux.Handle(userv1.NewUserServiceHandler(userService))
+	router := newRouter(ctx, db)
 
 	srv := &http.Server{
-		Handler:           h2c.NewHandler(mux, &http2.Server{}),
-		Addr:              fmt.Sprintf(":%d", s.port),
+		Handler:           h2c.NewHandler(router, &http2.Server{}),
+		Addr:              fmt.Sprintf(":%d", config.Env.ServerPort),
 		WriteTimeout:      time.Second * 60,
 		ReadTimeout:       time.Second * 15,
 		ReadHeaderTimeout: time.Second * 15,
@@ -62,7 +43,7 @@ func (s Server) Run(ctx context.Context) error {
 
 	eg, ctx := errgroup.WithContext(ctx)
 	eg.Go(func() error {
-		slog.Info(fmt.Sprintf("start Connect server port: %d", s.port))
+		slog.Info(fmt.Sprintf("start Connect server port: %d", config.Env.ServerPort))
 		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			return err
 		}
