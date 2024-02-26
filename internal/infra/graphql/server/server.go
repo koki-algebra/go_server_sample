@@ -37,7 +37,7 @@ func (s Server) Run(ctx context.Context) error {
 	}
 	defer db.Close()
 
-	router := NewRouter(ctx, db)
+	router := newRouter(ctx, db)
 	srv := http.Server{
 		Addr:              fmt.Sprintf(":%d", s.port),
 		WriteTimeout:      time.Second * 60,
