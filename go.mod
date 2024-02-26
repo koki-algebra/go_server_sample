@@ -1,9 +1,9 @@
 module github.com/koki-algebra/go_server_sample
 
-go 1.21.0
+go 1.22.0
 
 require (
-	github.com/99designs/gqlgen v0.17.36
+	github.com/99designs/gqlgen v0.17.44
 	github.com/bufbuild/connect-go v1.10.0
 	github.com/caarlos0/env v3.5.0+incompatible
 	github.com/friendsofgo/errors v0.9.2
@@ -15,7 +15,7 @@ require (
 	github.com/sourcegraph/conc v0.3.0
 	github.com/uptrace/bun v1.1.15
 	github.com/uptrace/bun/dialect/pgdialect v1.1.15
-	github.com/vektah/gqlparser/v2 v2.5.8
+	github.com/vektah/gqlparser/v2 v2.5.11
 	github.com/volatiletech/sqlboiler/v4 v4.16.2
 	github.com/volatiletech/strmangle v0.0.6
 	google.golang.org/protobuf v1.32.0
@@ -30,7 +30,7 @@ require (
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
-	github.com/hashicorp/golang-lru/v2 v2.0.3 // indirect
+	github.com/hashicorp/golang-lru/v2 v2.0.7 // indirect
 	github.com/invopop/yaml v0.2.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
@@ -39,6 +39,7 @@ require (
 	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect
 	github.com/perimeterx/marshmallow v1.1.5 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
+	github.com/sosodev/duration v1.2.0 // indirect
 	github.com/spf13/cast v1.6.0 // indirect
 	github.com/tmthrgd/go-hex v0.0.0-20190904060850-447a3041c3bc // indirect
 	github.com/vmihailenco/msgpack/v5 v5.3.5 // indirect
