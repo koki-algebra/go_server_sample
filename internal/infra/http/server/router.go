@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	middleware "github.com/deepmap/oapi-codegen/pkg/chi-middleware"
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/httplog/v2"
 	"github.com/rs/cors"
 
@@ -50,8 +50,8 @@ func newRouter(ctx context.Context, sqldb *sql.DB) (http.Handler, error) {
 
 	// Apply middleware
 	r.Use(
-		middleware.OapiRequestValidator(swagger),
 		httplog.RequestLogger(logger),
+		middleware.Heartbeat("/ping"),
 		cors.New(cors.Options{
 			AllowedOrigins: strings.Split(config.Env.ServerAllowOrigins, ","),
 			AllowedMethods: []string{http.MethodGet, http.MethodPost, http.MethodOptions},

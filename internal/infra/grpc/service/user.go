@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/bufbuild/connect-go"
+	"github.com/google/uuid"
 
 	"github.com/koki-algebra/go_server_sample/internal/entity"
 	userv1 "github.com/koki-algebra/go_server_sample/internal/infra/grpc/generated/user/v1"
@@ -29,7 +30,12 @@ func (s *UserService) GetByID(
 		return nil, err
 	}
 
-	user, err := s.usecase.GetByID(ctx, req.Msg.Id)
+	id, err := uuid.FromBytes(req.Msg.Id)
+	if err != nil {
+		return nil, err
+	}
+
+	user, err := s.usecase.GetByID(ctx, id)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -42,8 +48,10 @@ func convertUser(user *entity.User) *connect.Response[userv1.GetByIDResponse] {
 		return nil
 	}
 
+	id, _ := user.ID.MarshalBinary()
+
 	return connect.NewResponse[userv1.GetByIDResponse](&userv1.GetByIDResponse{
-		Id:   user.ID,
+		Id:   id,
 		Name: user.Name,
 	})
 }
