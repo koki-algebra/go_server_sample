@@ -10,14 +10,14 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
+	chiMiddleware "github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/httplog/v2"
 	"github.com/rs/cors"
 
 	"github.com/koki-algebra/go_server_sample/internal/infra/config"
 	"github.com/koki-algebra/go_server_sample/internal/infra/graphql/generated"
 	"github.com/koki-algebra/go_server_sample/internal/infra/graphql/resolver"
+	"github.com/koki-algebra/go_server_sample/internal/infra/middleware"
 	"github.com/koki-algebra/go_server_sample/internal/infra/repository"
 	"github.com/koki-algebra/go_server_sample/internal/usecase"
 )
@@ -57,21 +57,18 @@ func newRouter(ctx context.Context, sqldb *sql.DB) http.Handler {
 	}))
 
 	// Initialize router
-	router := chi.NewRouter()
+	mux := http.NewServeMux()
 
-	// Apply middleware
-	router.Use(
+	mux.Handle("/graphql", srv)
+	mux.Handle("/playground", playground.Handler("GraphQL Playground", "/graphql"))
+
+	return middleware.With(mux,
 		httplog.RequestLogger(logger),
-		middleware.Heartbeat("/ping"),
+		chiMiddleware.Heartbeat("/ping"),
 		cors.New(cors.Options{
 			AllowedOrigins: strings.Split(config.Env.ServerAllowOrigins, ","),
 			AllowedMethods: []string{http.MethodGet, http.MethodPost, http.MethodOptions},
 			AllowedHeaders: []string{"Authorization", "Content-Type"},
 		}).Handler,
 	)
-
-	router.Handle("/graphql", srv)
-	router.Handle("/playground", playground.Handler("GraphQL Playground", "/graphql"))
-
-	return router
 }
