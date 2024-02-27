@@ -4,6 +4,7 @@ services:
   api_server:
     image: cosmtrek/air:latest
     container_name: api_server
+    restart: always
     tty: true
     stdin_open: true
     working_dir: /workspaces
