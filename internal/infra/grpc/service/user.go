@@ -8,17 +8,17 @@ import (
 
 	"github.com/koki-algebra/go_server_sample/internal/entity"
 	userv1 "github.com/koki-algebra/go_server_sample/internal/infra/grpc/generated/user/v1"
-	"github.com/koki-algebra/go_server_sample/internal/infra/grpc/generated/user/v1/v1connect"
+	"github.com/koki-algebra/go_server_sample/internal/infra/grpc/generated/user/v1/userv1connect"
 	"github.com/koki-algebra/go_server_sample/internal/usecase"
 )
 
 type UserService struct {
-	usecase *usecase.User
+	user *usecase.User
 }
 
-func NewUserService(usecase *usecase.User) v1connect.UserServiceHandler {
+func NewUserService(user *usecase.User) userv1connect.UserServiceHandler {
 	return &UserService{
-		usecase: usecase,
+		user: user,
 	}
 }
 
@@ -32,10 +32,10 @@ func (s *UserService) GetByID(
 
 	id, err := uuid.FromBytes(req.Msg.Id)
 	if err != nil {
-		return nil, err
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
 
-	user, err := s.usecase.GetByID(ctx, id)
+	user, err := s.user.GetByID(ctx, id)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
