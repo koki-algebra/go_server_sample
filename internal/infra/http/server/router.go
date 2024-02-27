@@ -40,7 +40,7 @@ func newRouter(ctx context.Context, sqldb *sql.DB) (http.Handler, error) {
 	})
 
 	// Initialize router
-	r := chi.NewRouter()
+	mux := chi.NewMux()
 
 	swagger, err := oapi.GetSwagger()
 	if err != nil {
@@ -49,7 +49,7 @@ func newRouter(ctx context.Context, sqldb *sql.DB) (http.Handler, error) {
 	swagger.Servers = nil
 
 	// Apply middleware
-	r.Use(
+	mux.Use(
 		httplog.RequestLogger(logger),
 		middleware.Heartbeat("/ping"),
 		cors.New(cors.Options{
@@ -63,7 +63,7 @@ func newRouter(ctx context.Context, sqldb *sql.DB) (http.Handler, error) {
 	user := usecase.NewUser(repository.NewUserRepository(sqldb))
 
 	ctrl := controller.New(user)
-	oapi.HandlerFromMux(ctrl, r)
+	oapi.HandlerFromMux(ctrl, mux)
 
-	return r, nil
+	return mux, nil
 }
