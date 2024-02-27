@@ -2,7 +2,7 @@
 //
 // Source: user/v1/user.proto
 
-package v1connect
+package userv1connect
 
 import (
 	context "context"

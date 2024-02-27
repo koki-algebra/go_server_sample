@@ -14,7 +14,7 @@ import (
 	"github.com/rs/cors"
 
 	"github.com/koki-algebra/go_server_sample/internal/infra/config"
-	userv1 "github.com/koki-algebra/go_server_sample/internal/infra/grpc/generated/user/v1/v1connect"
+	userv1 "github.com/koki-algebra/go_server_sample/internal/infra/grpc/generated/user/v1/userv1connect"
 	"github.com/koki-algebra/go_server_sample/internal/infra/grpc/service"
 	"github.com/koki-algebra/go_server_sample/internal/infra/repository"
 	"github.com/koki-algebra/go_server_sample/internal/usecase"
