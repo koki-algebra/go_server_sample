@@ -6,18 +6,29 @@ package resolver
 
 import (
 	"context"
-	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/koki-algebra/go_server_sample/internal/infra/graphql/generated/model"
+	"github.com/koki-algebra/go_server_sample/internal/usecase"
 )
 
-// Save is the resolver for the Save field.
-func (r *mutationResolver) Save(ctx context.Context, input model.SaveInput) (*model.User, error) {
-	panic(fmt.Errorf("not implemented: Save - Save"))
+// SaveUser is the resolver for the saveUser field.
+func (r *mutationResolver) SaveUser(ctx context.Context, input model.SaveInput) (*model.User, error) {
+	saveInput := usecase.SaveUserInput{
+		ID:   input.ID,
+		Name: input.Name,
+	}
+
+	user, err := r.user.Save(ctx, saveInput)
+	if err != nil {
+		return nil, err
+	}
+
+	return convertUser(user), nil
 }
 
 // User is the resolver for the User field.
-func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error) {
+func (r *queryResolver) User(ctx context.Context, id uuid.UUID) (*model.User, error) {
 	user, err := r.user.GetByID(ctx, id)
 	if err != nil {
 		return nil, err

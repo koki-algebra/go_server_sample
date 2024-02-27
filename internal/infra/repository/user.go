@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 
+	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/pgdialect"
 
@@ -21,7 +22,11 @@ type userRepositoryImpl struct {
 	db *bun.DB
 }
 
-func (r *userRepositoryImpl) FindByID(ctx context.Context, id string) (*entity.User, error) {
+func (r *userRepositoryImpl) Save(ctx context.Context, user *entity.User) error {
+	return nil
+}
+
+func (r *userRepositoryImpl) FindByID(ctx context.Context, id uuid.UUID) (*entity.User, error) {
 	var user entity.User
 	if err := r.db.
 		NewSelect().

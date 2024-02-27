@@ -4,12 +4,13 @@ import (
 	"net/http"
 
 	"github.com/go-chi/render"
+	"github.com/google/uuid"
 
 	"github.com/koki-algebra/go_server_sample/internal/entity"
 	"github.com/koki-algebra/go_server_sample/internal/infra/http/oapi"
 )
 
-func (ctrl *controllerImpl) GetUserByID(w http.ResponseWriter, r *http.Request, id string) {
+func (ctrl *controllerImpl) GetUserByID(w http.ResponseWriter, r *http.Request, id uuid.UUID) {
 	ctx := r.Context()
 	user, err := ctrl.user.GetByID(ctx, id)
 	if err != nil {

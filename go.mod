@@ -11,6 +11,7 @@ require (
 	github.com/go-chi/chi/v5 v5.0.10
 	github.com/go-chi/httplog/v2 v2.0.9
 	github.com/go-chi/render v1.0.3
+	github.com/google/uuid v1.6.0
 	github.com/oapi-codegen/runtime v1.0.0
 	github.com/sourcegraph/conc v0.3.0
 	github.com/uptrace/bun v1.1.15
@@ -27,8 +28,6 @@ require (
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/go-openapi/jsonpointer v0.19.6 // indirect
 	github.com/go-openapi/swag v0.22.4 // indirect
-	github.com/google/uuid v1.6.0 // indirect
-	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/hashicorp/golang-lru/v2 v2.0.7 // indirect
 	github.com/invopop/yaml v0.2.0 // indirect
@@ -54,7 +53,6 @@ require (
 
 require (
 	github.com/agnivade/levenshtein v1.1.1 // indirect
-	github.com/deepmap/oapi-codegen v1.14.0
 	github.com/lib/pq v1.10.9
 	github.com/rs/cors v1.9.0
 	golang.org/x/net v0.21.0

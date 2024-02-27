@@ -2,6 +2,10 @@
 
 package model
 
+import (
+	"github.com/google/uuid"
+)
+
 type Mutation struct {
 }
 
@@ -9,10 +13,11 @@ type Query struct {
 }
 
 type SaveInput struct {
-	Name string `json:"name"`
+	ID   *uuid.UUID `json:"id,omitempty"`
+	Name *string    `json:"name,omitempty"`
 }
 
 type User struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID   uuid.UUID `json:"id"`
+	Name string    `json:"name"`
 }

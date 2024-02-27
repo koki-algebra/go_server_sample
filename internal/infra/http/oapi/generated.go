@@ -15,6 +15,7 @@ import (
 
 	"github.com/getkin/kin-openapi/openapi3"
 	"github.com/go-chi/chi/v5"
+	"github.com/google/uuid"
 	"github.com/oapi-codegen/runtime"
 )
 
@@ -26,15 +27,15 @@ type Error struct {
 
 // User defines model for User.
 type User struct {
-	Id   *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
+	Id   *uuid.UUID `json:"id,omitempty"`
+	Name *string    `json:"name,omitempty"`
 }
 
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 
 	// (GET /users/{id})
-	GetUserByID(w http.ResponseWriter, r *http.Request, id string)
+	GetUserByID(w http.ResponseWriter, r *http.Request, id uuid.UUID)
 }
 
 // Unimplemented server implementation that returns http.StatusNotImplemented for each endpoint.
@@ -42,7 +43,7 @@ type ServerInterface interface {
 type Unimplemented struct{}
 
 // (GET /users/{id})
-func (_ Unimplemented) GetUserByID(w http.ResponseWriter, r *http.Request, id string) {
+func (_ Unimplemented) GetUserByID(w http.ResponseWriter, r *http.Request, id uuid.UUID) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
@@ -62,7 +63,7 @@ func (siw *ServerInterfaceWrapper) GetUserByID(w http.ResponseWriter, r *http.Re
 	var err error
 
 	// ------------- Path parameter "id" -------------
-	var id string
+	var id uuid.UUID
 
 	err = runtime.BindStyledParameterWithLocation("simple", false, "id", runtime.ParamLocationPath, chi.URLParam(r, "id"), &id)
 	if err != nil {
@@ -204,14 +205,15 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"H4sIAAAAAAAC/6xTwW7bMAz9FYHb0YkVr206HYcUQ3YddipyUCQ6VmFLGkUXDQL/+yA5Wdc2x10smn5+",
-	"fI+kTmDCEINHzwnUCZLpcNAlfCAKlINIISKxw5IeMCV9wBxaTIZcZBc8qBkvLp8r4GNEUJCYnD/ANFVA",
-	"+Ht0hBbU41+a3VTBr4RXCjmbn/iih9hnott1Y/fr9d3ippVfF6sV4mKPt3cL2dw02qwaKWXzsWwFXg/4",
-	"lulH6LzYhOsiz5mwf0LDMOWU823IDOy4/J/1igdvY3CeoYJnpDT3YLWUS5mLhoheRwcKvixXSwkVRM1d",
-	"8VWPCSnVJ2en/HpA/tjL78giw8T+OJ/OQiElnRFbO2OykG/H7abQkx6QkRKox/d0240I7UzEQeSK2RSo",
-	"IgouLYJS5HVITCNW540o9t/1apfBKQaf5oE1UubDBM/oiykdY+9MkVw/pSzl9A/fZ8IWFHyqX1ewPu9f",
-	"XVaiNP+tk5+jMZhSO/b9URDySB6t0MUbFHSrx57/m475ElwRMnp8iWgYrcALJqMS0vNlCCP1oKBjjqqu",
-	"+2B034XE6l7eS5h2058AAAD//xYCHHd8AwAA",
+	"H4sIAAAAAAAC/6xTT2/bPgz9KgZ/v6P/KF7bdDoOKYbsOuRU5KBItK3CljSJKhIE/u6D5GRttxx7sWj6",
+	"6fHxkT6DtJOzBg0F4GcIcsBJ5PDJe+tT4Lx16EljTk8YgugxhQqD9NqRtgb4gi+un0ugk0PgEMhr08M8",
+	"l+DxV9QeFfDnPzT7uYRdwBuFtEpPPIrJjYnoft2qw3r9UN117Gu1WiFWB7x/qFh71wq5ahljLZRwrHpb",
+	"XWrHqFW922037/OVnpz1lAsKGoBDr2mIh1raqemt7Uds0sUs2YgJP8r4YQdTbOztDi8Ze3hBSTCnlDad",
+	"TQykKd9PzRZPRjmrDUEJr+jDYuCqZjWDuQTr0AingcOXelUzKLPQbEoTA/rQnLWa02uP9O8gviMVCVYc",
+	"TsupFWRSLxJiqxZMEvLtlL1xwosJCX0A/vw33XZT2G4hIlukiqkp4It7V4sgF3mbMPmI5WWdksTPHMu8",
+	"T5WCsyYsq9Iylg5pDaHJFMK5Ucvcb/MSUh/nd2L+99gBh/+at+VvLpvf5GXMk/tow88oJYbQxXE8FR4p",
+	"eoOqENkYyOhOxJE+Tcfy+90QEg0eHUpCVeAVk1AB/et1gtGPwGEgcrxpRivFONhA/JE9Mpj38+8AAAD/",
+	"/+Ya3KD2AwAA",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file
