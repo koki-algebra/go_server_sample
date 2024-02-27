@@ -30,7 +30,7 @@ func (s *UserService) GetByID(
 		return nil, err
 	}
 
-	id, err := uuid.FromBytes(req.Msg.Id)
+	id, err := uuid.Parse(req.Msg.Id)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
@@ -48,10 +48,8 @@ func convertUser(user *entity.User) *connect.Response[userv1.GetByIDResponse] {
 		return nil
 	}
 
-	id, _ := user.ID.MarshalBinary()
-
 	return connect.NewResponse[userv1.GetByIDResponse](&userv1.GetByIDResponse{
-		Id:   id,
+		Id:   user.ID.String(),
 		Name: user.Name,
 	})
 }

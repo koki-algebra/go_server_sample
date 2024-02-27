@@ -9,10 +9,10 @@ service UserService {
 }
 
 message GetByIDRequest {
-  bytes id = 1;
+  string id = 1;
 }
 
 message GetByIDResponse {
-  bytes id = 1;
+  string id = 1;
   string name = 2;
 }
